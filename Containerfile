@@ -13,6 +13,8 @@ FROM ${BASE_IMAGE}
 ARG ZEPHYR_SDK_VERSION=0.17.0
 ARG TOOLCHAIN_LIST="-t x86_64-zephyr-elf -t arm-zephyr-eabi"
 ARG VIRTUAL_ENV=/opt/venv
+ARG TOOLCHAIN_VARIANT=zephyr
+ARG TOOLCHAIN_DIR=/opt/toolchains
 
 # Install required dependencies
 # -----------------------------------------------------------------------------
@@ -59,30 +61,32 @@ RUN python3 -m venv ${VIRTUAL_ENV} \
 # -----------------------------------------------------------------------------
 
 RUN mkdir -p /workspace/ \
-    && mkdir -p /opt/toolchains
+    && mkdir -p ${TOOLCHAIN_DIR}
 
 
 # Install toolchains (Zephyr SDK)
 # -----------------------------------------------------------------------------
 
 # Download SDK
-RUN cd /opt/toolchains \
+RUN cd ${TOOLCHAIN_DIR} \
     && wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_VERSION}/zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64_minimal.tar.xz \
     && wget -O - https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v0.17.0/sha256.sum | shasum --check --ignore-missing \
     && tar xf zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64_minimal.tar.xz \
     && rm zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64_minimal.tar.xz
 
 # Setup toolchains
-RUN cd /opt/toolchains/zephyr-sdk-${ZEPHYR_SDK_VERSION} \
+RUN cd ${TOOLCHAIN_DIR}/zephyr-sdk-${ZEPHYR_SDK_VERSION} \
     && bash setup.sh -c ${TOOLCHAIN_LIST}
 
 # Install host tools
-RUN cd /opt/toolchains/zephyr-sdk-${ZEPHYR_SDK_VERSION} \
+RUN cd ${TOOLCHAIN_DIR}/zephyr-sdk-${ZEPHYR_SDK_VERSION} \
     && wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_VERSION}/hosttools_linux-x86_64.tar.xz \
     && tar xf hosttools_linux-x86_64.tar.xz \
     && rm hosttools_linux-x86_64.tar.xz \
     && bash zephyr-sdk-x86_64-hosttools-standalone-*.sh -y -d .
 
+ENV ZEPHYR_TOOLCHAIN_VARIANT=${TOOLCHAIN_VARIANT}
+ENV ZEPHYR_SDK_INSTALL_DIR=${TOOLCHAIN_DIR}
 
 # Set working directory
 # -----------------------------------------------------------------------------
