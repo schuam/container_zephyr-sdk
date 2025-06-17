@@ -49,6 +49,7 @@ image:
 		-t $(IMAGE_NAME):`$(GIT) describe --tags --dirty --always` \
 		--build-arg BASE_OS=$(BASE_OS) \
 		--build-arg BASE_OS_VERSION=$(BASE_OS_VERSION) \
+		--build-arg ZEPHYR_VERSION=$(ZEPHYR_VERSION) \
 		--build-arg ZEPHYR_SDK_VERSION=$(ZEPHYR_SDK_VERSION) \
 		--build-arg TOOLCHAIN_LIST=$(TOOLCHAIN_LIST) \
 		.
