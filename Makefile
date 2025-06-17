@@ -8,7 +8,7 @@ BASE_OS_VERSION := 24.04
 IMAGE_FILE := Containerfile
 IMAGE_NAME := schuam/zephyr-sdk
 
-ZEPHYR_SDK_VERSION := 0.17.0
+ZEPHYR_SDK_VERSION := 0.16.9
 TOOLCHAIN_LIST := "-t x86_64-zephyr-elf -t arm-zephyr-eabi"
 
 # Image build tool (IBT) - can be overridden with make IBT=docker

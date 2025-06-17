@@ -27,6 +27,7 @@ RUN git init && \
 
 # Stage 2: Final image
 # -----------------------------------------------------------------------------
+
 FROM ${BASE_IMAGE}
 
 # Copy only the requirements*.txt files from the sparse checkout
@@ -35,7 +36,7 @@ COPY --from=requirements-fetcher zephyr/scripts/requirements*.txt /tmp/requireme
 # Some build time variables
 # -----------------------------------------------------------------------------
 
-ARG ZEPHYR_SDK_VERSION=0.17.0
+ARG ZEPHYR_SDK_VERSION=0.16.9
 ARG TOOLCHAIN_LIST="-t x86_64-zephyr-elf -t arm-zephyr-eabi"
 ARG VIRTUAL_ENV=/opt/venv
 ARG TOOLCHAIN_VARIANT=zephyr
