@@ -85,28 +85,18 @@ RUN python3 -m venv ${VIRTUAL_ENV} \
     && python3 -m pip install --no-cache-dir -r /tmp/requirements/requirements.txt
 
 
-# Set up directories
+# Installe the SDK (including host tools)
 # -----------------------------------------------------------------------------
 
-RUN mkdir -p ${TOOLCHAIN_DIR}
-
-
-# Install toolchains (Zephyr SDK)
-# -----------------------------------------------------------------------------
-
-# Download SDK
-RUN cd ${TOOLCHAIN_DIR} \
+RUN mkdir -p ${TOOLCHAIN_DIR} \
+    && cd ${TOOLCHAIN_DIR} \
     && wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_VERSION}/zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64_minimal.tar.xz \
     && wget -O - https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_VERSION}/sha256.sum | shasum --check --ignore-missing \
     && tar xf zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64_minimal.tar.xz \
-    && rm zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64_minimal.tar.xz
-
-# Setup toolchains
-RUN cd ${TOOLCHAIN_DIR}/zephyr-sdk-${ZEPHYR_SDK_VERSION} \
-    && bash setup.sh -c ${TOOLCHAIN_LIST}
-
-# Install host tools
-RUN cd ${TOOLCHAIN_DIR}/zephyr-sdk-${ZEPHYR_SDK_VERSION} \
+    && rm zephyr-sdk-${ZEPHYR_SDK_VERSION}_linux-x86_64_minimal.tar.xz \
+    && cd ${TOOLCHAIN_DIR}/zephyr-sdk-${ZEPHYR_SDK_VERSION} \
+    && bash setup.sh -c ${TOOLCHAIN_LIST} \
+    && cd ${TOOLCHAIN_DIR}/zephyr-sdk-${ZEPHYR_SDK_VERSION} \
     && wget https://github.com/zephyrproject-rtos/sdk-ng/releases/download/v${ZEPHYR_SDK_VERSION}/hosttools_linux-x86_64.tar.xz \
     && tar xf hosttools_linux-x86_64.tar.xz \
     && rm hosttools_linux-x86_64.tar.xz \
@@ -114,6 +104,7 @@ RUN cd ${TOOLCHAIN_DIR}/zephyr-sdk-${ZEPHYR_SDK_VERSION} \
 
 ENV ZEPHYR_TOOLCHAIN_VARIANT=${TOOLCHAIN_VARIANT}
 ENV ZEPHYR_SDK_INSTALL_DIR=${TOOLCHAIN_DIR}
+
 
 # Set working directory
 # -----------------------------------------------------------------------------
