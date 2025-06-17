@@ -60,8 +60,7 @@ RUN python3 -m venv ${VIRTUAL_ENV} \
 # Set up directories
 # -----------------------------------------------------------------------------
 
-RUN mkdir -p /workspace/ \
-    && mkdir -p ${TOOLCHAIN_DIR}
+RUN mkdir -p ${TOOLCHAIN_DIR}
 
 
 # Install toolchains (Zephyr SDK)
@@ -91,5 +90,6 @@ ENV ZEPHYR_SDK_INSTALL_DIR=${TOOLCHAIN_DIR}
 # Set working directory
 # -----------------------------------------------------------------------------
 
-WORKDIR /workspace
+VOLUME ["/workdir"]
+WORKDIR /workdir
 
