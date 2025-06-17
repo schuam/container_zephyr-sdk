@@ -8,6 +8,7 @@ BASE_OS_VERSION := 24.04
 IMAGE_FILE := Containerfile
 IMAGE_NAME := schuam/zephyr-sdk
 
+ZEPHYR_VERSION := v3.7
 ZEPHYR_SDK_VERSION := 0.16.9
 TOOLCHAIN_LIST := "-t x86_64-zephyr-elf -t arm-zephyr-eabi"
 
@@ -44,7 +45,7 @@ help: Makefile
 image:
 	$(IBT) build \
 		-f $(IMAGE_FILE) \
-		-t $(IMAGE_NAME):$(ZEPHYR_SDK_VERSION) \
+		-t $(IMAGE_NAME):sdk-v$(ZEPHYR_SDK_VERSION)_zephyr-$(ZEPHYR_VERSION)\
 		-t $(IMAGE_NAME):`$(GIT) describe --tags --dirty --always` \
 		--build-arg BASE_OS=$(BASE_OS) \
 		--build-arg BASE_OS_VERSION=$(BASE_OS_VERSION) \
