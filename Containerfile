@@ -7,6 +7,7 @@ ARG BASE_IMAGE=${BASE_OS}:${BASE_OS_VERSION}
 
 FROM ${BASE_IMAGE}
 
+
 # Some build time variables
 # -----------------------------------------------------------------------------
 
@@ -15,6 +16,7 @@ ARG TOOLCHAIN_LIST="-t x86_64-zephyr-elf -t arm-zephyr-eabi"
 ARG VIRTUAL_ENV=/opt/venv
 ARG TOOLCHAIN_VARIANT=zephyr
 ARG TOOLCHAIN_DIR=/opt/toolchains
+
 
 # Install required dependencies
 # -----------------------------------------------------------------------------
