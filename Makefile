@@ -44,9 +44,7 @@ help: Makefile
 image:
 	$(IBT) build \
 		-f $(IMAGE_FILE) \
-		-t $(IMAGE_NAME):latest \
-		-t $(IMAGE_NAME):$(BASE_OS)-latest \
-		-t $(IMAGE_NAME):$(ZEPHYR_SDK_VERSION)-$(BASE_OS)-$(BASE_OS_VERSION) \
+		-t $(IMAGE_NAME):$(ZEPHYR_SDK_VERSION) \
 		-t $(IMAGE_NAME):`$(GIT) describe --tags --dirty --always` \
 		--build-arg BASE_OS=$(BASE_OS) \
 		--build-arg BASE_OS_VERSION=$(BASE_OS_VERSION) \
