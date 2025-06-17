@@ -11,7 +11,8 @@ IMAGE_NAME := schuam/zephyr-sdk
 ZEPHYR_SDK_VERSION := 0.17.0
 TOOLCHAIN_LIST := "-t x86_64-zephyr-elf -t arm-zephyr-eabi"
 
-IBT := podman    # IBT stands for "image build tool"
+# Image build tool (IBT) - can be overridden with make IBT=docker
+IBT := podman
 GIT := git
 
 
