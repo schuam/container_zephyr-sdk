@@ -1,12 +1,36 @@
-# Base image
+# Variable needed in a `FROM` statement
+# They must be declared before the first `FROM` statement.
 # -----------------------------------------------------------------------------
 
 ARG BASE_OS=ubuntu
 ARG BASE_OS_VERSION=24.04
 ARG BASE_IMAGE=${BASE_OS}:${BASE_OS_VERSION}
 
+
+# Stage 1: image to fetch python requirements
+# -----------------------------------------------------------------------------
+
+FROM docker.io/alpine/git as requirements-fetcher
+
+ARG ZEPHYR_VERSION=v3.7
+ARG ZEPHYR_BRANCH=${ZEPHYR_VERSION}-branch
+
+WORKDIR /zephyr
+
+# Sparse checkout only the scripts/ directory
+RUN git init && \
+    git remote add origin https://github.com/zephyrproject-rtos/zephyr.git && \
+    git config core.sparseCheckout true && \
+    echo "scripts/" >> .git/info/sparse-checkout && \
+    git pull --depth 1 origin ${ZEPHYR_BRANCH}
+
+
+# Stage 2: Final image
+# -----------------------------------------------------------------------------
 FROM ${BASE_IMAGE}
 
+# Copy only the requirements*.txt files from the sparse checkout
+COPY --from=requirements-fetcher zephyr/scripts/requirements*.txt /tmp/requirements/
 
 # Some build time variables
 # -----------------------------------------------------------------------------
@@ -56,7 +80,8 @@ RUN apt-get update \
 ENV VIRTUAL_ENV=${VIRTUAL_ENV}
 ENV PATH="${VIRTUAL_ENV}/bin:$PATH"
 RUN python3 -m venv ${VIRTUAL_ENV} \
-    && python3 -m pip install --no-cache-dir west
+    && python3 -m pip install --no-cache-dir west \
+    && python3 -m pip install --no-cache-dir -r /tmp/requirements/requirements.txt
 
 
 # Set up directories
