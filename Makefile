@@ -16,6 +16,7 @@ TOOLCHAIN_LIST := "-t x86_64-zephyr-elf -t arm-zephyr-eabi"
 IBT := podman
 GIT := git
 
+DATE := $(shell date -I)
 
 # -----------------------------------------------------------------------------
 # targets
@@ -45,7 +46,7 @@ help: Makefile
 image:
 	$(IBT) build \
 		-f $(IMAGE_FILE) \
-		-t $(IMAGE_NAME):sdk-v$(ZEPHYR_SDK_VERSION)_zephyr-$(ZEPHYR_VERSION)\
+		-t $(IMAGE_NAME):sdk-v$(ZEPHYR_SDK_VERSION)_zephyr-$(ZEPHYR_VERSION)_$(DATE) \
 		-t $(IMAGE_NAME):`$(GIT) describe --tags --dirty --always` \
 		--build-arg BASE_OS=$(BASE_OS) \
 		--build-arg BASE_OS_VERSION=$(BASE_OS_VERSION) \
