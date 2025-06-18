@@ -9,7 +9,7 @@ env:
   IMAGE_NAME: ${{ vars.DOCKERHUB_USERNAME }}/zephyr-sdk
 
 jobs:
-  build:
+  build_and_push:
 
     runs-on: ubuntu-latest
 
