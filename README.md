@@ -85,13 +85,25 @@ your Zephyr workspace and run (replace `podman` with `docker` in case you built
 a docker image):
 
 ```bash
-podman run --rm -it -v $(pwd):/workdir schuam/zephyr-sdk:sdk-v0.16.9_zephyr-v3.7
+podman run --rm -it -v $(pwd):/workdir schuam/zephyr-sdk:sdk-v<SDK_VERSION>_zephyr-<ZEPHYR_VERSION>_<YYYY-MM-DD>
 ```
+
+Replace:
+- `<SDK_VERSION>` with the SDK version you built the container for
+- `<ZEPHYR_VERSION>` with the Zephyr version you used for he Python requirment
+  files
+- `<YYYY-MM-DD>` with the date you build the container
 
 Inside the container you can use you normal `west build (...)` command to build
 your application.
+
+**Note**: Inside the container the environment variable
+`ZEPHYR_SDK_INSTALL_DIR` and `ZEPHYR_TOOLCHAIN_VARIANT` are already set. You
+have to set `ZEPHYR_BASE` yourself. This variable depends on how you set up
+your west workspace and how you mount the workspace in the container.
 
 
 [Zephyr SDK]: https://docs.zephyrproject.org/latest/develop/toolchains/zephyr_sdk.html
 [Zephyr-SDK Version Compatibility Matrix]: https://docs.google.com/spreadsheets/d/1wzGJLRuR6urTgnDFUqKk7pEB8O6vWu6Sxziw_KROxMA/edit?gid=0#gid=0
 [Zephyrs SDK installation]: https://docs.zephyrproject.org/latest/develop/toolchains/zephyr_sdk.html#zephyr-sdk-installation
+
